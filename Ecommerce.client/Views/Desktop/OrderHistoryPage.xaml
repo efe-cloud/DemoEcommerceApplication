@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:Ecommerce.client.ViewModels"
+    xmlns:models="clr-namespace:Ecommerce.client.Models"
+    x:Class="Ecommerce.client.Views.Desktop.OrderHistoryPage"
+    x:DataType="viewmodel:OrderHistoryViewModel"
+    Title="Order History">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Define your styles here -->
+            <Style TargetType="Label" x:Key="SectionHeader">
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="Margin" Value="0,10,0,5" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout Spacing="10" Padding="10">
+        <Label Text="Your Orders" Style="{StaticResource SectionHeader}" />
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator IsRunning="{Binding IsLoading}" 
+                           IsVisible="{Binding IsLoading}" 
+                           Color="Blue" />
+
+        <!-- Status Message -->
+        <Label Text="{Binding StatusMessage}" 
+               TextColor="Red" 
+               HorizontalOptions="Center" 
+               IsVisible="{Binding StatusMessage, Converter={StaticResource StringToBoolConverter}}" />
+
+        <!-- Orders List -->
+        <CollectionView ItemsSource="{Binding Orders}" 
+                        IsVisible="{Binding Orders.Count, Converter={StaticResource IntToBoolConverter}}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:UserOrder">
+                    <Frame Padding="10" Margin="5" BorderColor="Gray" CornerRadius="5">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding OrderDate, StringFormat='Order Date: {0:MM/dd/yyyy}'}" 
+                                   FontAttributes="Bold" />
+                            <CollectionView ItemsSource="{Binding Items}" 
+                                            HeightRequest="100">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="models:UserOrderItem">
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Label Text="{Binding ProductName}" 
+                                                   FontAttributes="Bold" />
+                                            <Label Text="{Binding Quantity, StringFormat='Qty: {0}'}" 
+                                                   TextColor="Gray" />
+                                            <Label Text="{Binding PriceAtCheckout, StringFormat='${0:F2}'}" 
+                                                   TextColor="Gray" />
+                                        </HorizontalStackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                            <Label Text="{Binding TotalAmount, StringFormat='Total: ${0:F2}'}" 
+                                   FontAttributes="Bold" 
+                                   HorizontalOptions="End" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

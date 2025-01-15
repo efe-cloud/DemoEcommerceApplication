@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:Ecommerce.client.Models"
+    xmlns:vm="clr-namespace:Ecommerce.client.ViewModels"
+    x:Class="Ecommerce.client.Views.Desktop.DesktopHomePage"
+    x:DataType="vm:DesktopHomePageViewModel"
+    Title="Home">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+
+        <!-- Search Bar Section (Fixed Alignment) -->
+        <Grid ColumnDefinitions="*, Auto" Padding="0, 0, 0, 10">
+            <Entry Text="{Binding SearchQuery}"
+                   Placeholder="Search products..."
+                   HorizontalOptions="FillAndExpand"
+                   Margin="0,0,10,0"/>
+            <Button Text="🔍"
+                    Command="{Binding SearchCommand}"
+                    WidthRequest="50"/>
+        </Grid>
+
+        <!-- Welcome Message -->
+        <Label Text="Welcome to my demo e-commerce app! 
+                     As you can see, for now it's not about the UI :)"
+               FontSize="20"
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"
+               Padding="10"/>
+
+        <!-- Navigation Buttons -->
+        <VerticalStackLayout Spacing="10">
+            <Button Text="Go to Products" Command="{Binding NavigateToProductsCommand}" />
+            <Button Text="Go to Cart" Command="{Binding NavigateToCartCommand}" />
+            <Button Text="Go to Account" Command="{Binding NavigateToAccountCommand}" />
+            <Button Text="Go to Categories" Command="{Binding NavigateToCategoriesCommand}" />
+            <Button Text="Go to Orders" Command="{Binding NavigateToOrdersCommand}" />
+            <Button Text="Go to Payment" Command="{Binding NavigateToPaymentCommand}" />
+        </VerticalStackLayout>
+
+        <!-- Search Results (Fixed Layout) -->
+        <CollectionView ItemsSource="{Binding SearchResults}" IsVisible="{Binding HasSearchResults}"
+                        HeightRequest="250" Margin="0,10,0,0">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" />
+                <!-- ✅ Fixed -->
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Product">
+                    <Frame Padding="10" Margin="5" CornerRadius="10" BackgroundColor="Gray">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold"/>
+                            <Label Text="{Binding Price, StringFormat='GH₵ {0:F2}'}" TextColor="Gray"/>
+                            <Button Text="View Details"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DesktopHomePageViewModel}}, Path=SelectProductCommand}"
+                                    CommandParameter="{Binding}"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ecommerce.client.Views.Desktop.RegisterPage"
+             Title="Register">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+           
+            <Style TargetType="Label" x:Key="ErrorLabelStyle">
+                <Setter Property="TextColor" Value="Red" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout Padding="20" Spacing="10">
+
+        <Label Text="Register" FontSize="24" HorizontalOptions="Center" />
+
+        <Entry Placeholder="Email" Text="{Binding Email}" Keyboard="Email" />
+
+        <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="True" />
+
+        <Entry Placeholder="Confirm Password" Text="{Binding ConfirmPassword}" IsPassword="True" />
+
+        <!-- Error Message -->
+        <Label Text="{Binding ErrorMessage}"
+               Style="{StaticResource ErrorLabelStyle}"
+               IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}" />
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="Blue" />
+
+        <Button Text="Register"
+                Command="{Binding RegisterCommand}"
+                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}" />
+    </VerticalStackLayout>
+</ContentPage>

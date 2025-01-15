@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:Ecommerce.client.ViewModels"
+    xmlns:models="clr-namespace:Ecommerce.client.Models"
+    x:Class="Ecommerce.client.Views.Desktop.CategoryPage"
+    x:DataType="viewmodel:CategoryViewModel"
+    Title="Categories">
+
+    <!-- Ensure BindingContext is set via code-behind or dependency injection -->
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="10" Margin="10">
+
+            <!-- Header for Categories -->
+            <Label Text="Categories" FontSize="Large" HorizontalTextAlignment="Center" 
+                   IsVisible="{Binding AreCategoriesVisible}" />
+
+            <!-- Categories CollectionView -->
+            <CollectionView ItemsSource="{Binding Categories}" 
+                            SelectionMode="Single" 
+                            IsVisible="{Binding AreCategoriesVisible}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Category">
+                        <Frame Padding="10" Margin="5" BackgroundColor="LightGray" CornerRadius="8">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Name}"
+                                       FontSize="18"
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center" />
+                                <Image Source="{Binding Image}"
+                                       HeightRequest="100"
+                                       WidthRequest="100"
+                                       Aspect="AspectFill" />
+                            </VerticalStackLayout>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CategoryViewModel}}, Path=SelectCategoryCommand}"
+                                    CommandParameter="{Binding}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Back Button (Visible when a category is selected) -->
+            <Button Text="Back to Categories"
+                    Command="{Binding ResetCategoriesCommand}"
+                    IsVisible="{Binding IsCategorySelected}"
+                    HorizontalOptions="Center" />
+
+            <!-- Header for Products -->
+            <Label Text="Products"
+                   FontSize="Large"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   IsVisible="{Binding AreProductsVisible}" />
+
+            <!-- Products CollectionView -->
+            <CollectionView ItemsSource="{Binding Products}"
+                            IsVisible="{Binding AreProductsVisible}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Product">
+                        <Frame Padding="10" Margin="5" BackgroundColor="White" CornerRadius="8" BorderColor="LightGray">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Name}"
+                                       FontSize="18"
+                                       TextColor="Black" 
+                                       HorizontalOptions="Center" />
+                                <Image Source="{Binding Image}"
+                                       HeightRequest="100"
+                                       WidthRequest="100"
+                                       Aspect="AspectFill" />
+                                <Label Text="{Binding Price, StringFormat='Price: ${0:F2}'}"
+                                       TextColor="Black" 
+                                       HorizontalOptions="Center" />
+                                <Button Text="Add to Cart"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CategoryViewModel}}, Path=AddToCartCommand}"
+                                        CommandParameter="{Binding}" 
+                                        HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CategoryViewModel}}, Path=SelectProductCommand}"
+                                    CommandParameter="{Binding}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

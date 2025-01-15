@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:Ecommerce.client.ViewModels"
+    xmlns:models="clr-namespace:Ecommerce.client.Models"
+    x:Class="Ecommerce.client.Views.Desktop.ProductsViewPage"
+    x:DataType="viewmodel:ProductsViewViewModel"
+    Title="{Binding Title}"
+    x:Name="ParentPage">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <HorizontalStackLayout Spacing="10">
+                <Entry Text="{Binding SearchQuery}"
+                       Placeholder="Search products..."
+                       HorizontalOptions="FillAndExpand" />
+                <Button Text="Search"
+                        Command="{Binding SearchCommand}" />
+            </HorizontalStackLayout>
+
+            <CollectionView ItemsSource="{Binding SearchResults}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:ProductTem">
+                        <Frame CornerRadius="8" Margin="5" BackgroundColor="Transparent">
+                            <VerticalStackLayout Margin="0,0,0,10">
+                                <Image WidthRequest="150"
+                                       HeightRequest="150"
+                                       Source="{Binding Image}" />
+                                <Label Text="{Binding Name}"
+                                       HorizontalTextAlignment="Center"
+                                       FontSize="18" />
+                                <HorizontalStackLayout HorizontalOptions="Center">
+                                    <Label Text="GHS"
+                                           HorizontalTextAlignment="Center"
+                                           FontSize="18" />
+                                    <Label Text="{Binding Price, StringFormat='{0:F2}'}"
+                                           HorizontalTextAlignment="Center"
+                                           FontSize="18" />
+                                </HorizontalStackLayout>
+
+                                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                                    <Button Text="Add to Cart"
+                                            Command="{Binding Source={x:Reference ParentPage}, Path=BindingContext.AddToCartCommand}"
+                                            CommandParameter="{Binding}" />
+                                    <Button Text="Details"
+                                            TextColor="Purple"
+                                            Command="{Binding Source={x:Reference ParentPage}, Path=BindingContext.SelectProductCommand}"
+                                            CommandParameter="{Binding}" />
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Ecommerce.client.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:desktopHomePage="clr-namespace:Ecommerce.client.Views.Desktop"
+    xmlns:ProductsViewPage="clr-namespace:Ecommerce.client.Views.Desktop"
+    xmlns:cartPage="clr-namespace:Ecommerce.client.Views.Desktop"
+    xmlns:accountPage="clr-namespace:Ecommerce.client.Views.Desktop"
+    xmlns:categoryPage="clr-namespace:Ecommerce.client.Views.Desktop"
+    xmlns:paymentPage="clr-namespace:Ecommerce.client.Views.Desktop"
+    xmlns:paymentSuccessPage="clr-namespace:Ecommerce.client.Views.Desktop"
+    xmlns:splashPage="clr-namespace:Ecommerce.client.Views.Desktop"
+    Shell.FlyoutBehavior="Flyout"
+    Shell.NavBarIsVisible="False">
+
+    <!-- Splash Screen as the Main Page -->
+    <ShellContent Title="Gecemarketim.com"
+                  ContentTemplate="{DataTemplate splashPage:SplashPage}"
+                  Route="SplashPage" />
+
+    <!-- HOME (Now Accessible via Navigation from SplashPage) -->
+    <ShellContent Title="Home"
+                  ContentTemplate="{OnIdiom Desktop={DataTemplate desktopHomePage:DesktopHomePage}}"
+                  />
+
+    <!-- Other Flyout Items -->
+    <FlyoutItem Title="Products" FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="Add Product"
+                      Icon="addproduct.jpg"
+                      ContentTemplate="{DataTemplate desktopHomePage:AddProductPage}" />
+        <ShellContent Title="View Products"
+                      Icon="viewproduct.jpg"
+                      ContentTemplate="{DataTemplate ProductsViewPage:ProductsViewPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Cart">
+        <ShellContent Title="Shopping Cart"
+                      Icon="cart.jpg"
+                      ContentTemplate="{DataTemplate cartPage:CartPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Categories">
+        <ShellContent Title="Categories"
+                      Icon="categories.jpg"
+                      ContentTemplate="{DataTemplate categoryPage:CategoryPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Account">
+        <ShellContent Title="Account Management"
+                      Icon="account_icon.png"
+                      
+                      ContentTemplate="{DataTemplate accountPage:AccountPage}" />
+    </FlyoutItem>
+
+</Shell>

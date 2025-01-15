@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:Ecommerce.client.ViewModels"
+    xmlns:models="clr-namespace:Ecommerce.client.Models"
+    x:Class="Ecommerce.client.Views.Desktop.CartPage"
+    x:DataType="viewmodel:CartViewModel"
+    Title="{Binding Title}">
+
+    <VerticalStackLayout Spacing="10" Margin="10">
+        <Label Text="Shopping Cart"
+               FontSize="Large"
+               HorizontalTextAlignment="Center" />
+
+        <!-- If user not logged in, show a label -->
+        <Label Text="Please login to see your cart items"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="Red"
+               IsVisible="{Binding IsNotLoggedIn}"/>
+
+        <CollectionView ItemsSource="{Binding CartItems}"
+                        IsVisible="{Binding IsLoggedIn}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:CartItem">
+                    <Frame Padding="10" Margin="5">
+                        <HorizontalStackLayout>
+                            <Image Source="{Binding Image}"
+                                   WidthRequest="50"
+                                   HeightRequest="50"/>
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Name}" FontSize="18"/>
+                                <Label Text="{Binding Price, StringFormat='Price: ${0:F2}'}"/>
+                                <Label Text="{Binding Quantity, StringFormat='Qty: {0}'}"/>
+                                <Label Text="{Binding TotalPrice, StringFormat='Total: ${0:F2}'}"/>
+                            </VerticalStackLayout>
+                            <Button Text="Remove"
+                                    Command="{Binding RemoveItemCommand, Source={RelativeSource AncestorType={x:Type viewmodel:CartViewModel}}}"
+                                    CommandParameter="{Binding}"/>
+                        </HorizontalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label Text="{Binding TotalPrice, StringFormat='Total Price: ${0:F2}'}"
+               FontSize="18"
+               HorizontalTextAlignment="Center"
+               IsVisible="{Binding IsLoggedIn}" />
+
+        <!-- Clear Cart -->
+        <Button Text="Clear Cart"
+                Command="{Binding ClearCartCommand}"
+                BackgroundColor="Red"
+                TextColor="White"
+                IsVisible="{Binding IsLoggedIn}" />
+
+        <!-- If user is logged in, show "Proceed to Payment" -->
+        <Button Text="Proceed to Payment"
+                Command="{Binding GoToPaymentPageCommand}"
+                BackgroundColor="Green"
+                TextColor="White"
+                IsVisible="{Binding IsLoggedIn}" />
+
+        <!-- If user is NOT logged in, show "You need to login before you buy" -->
+        <Button Text="You need to login before you buy"
+                TextColor="Black"
+                BackgroundColor="LightGray"
+                IsVisible="{Binding IsNotLoggedIn}"/>
+    </VerticalStackLayout>
+
+</ContentPage>

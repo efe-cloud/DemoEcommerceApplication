@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:Ecommerce.client.ViewModels"
+    xmlns:models="clr-namespace:Ecommerce.client.Models"
+    xmlns:converters="clr-namespace:Ecommerce.client.Converters"
+    x:Class="Ecommerce.client.Views.Desktop.PaymentPage"
+    x:DataType="viewmodel:PaymentViewModel"
+    Title="Payment">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20" BackgroundColor="#FFFFFF">
+
+            <!-- Section: Order Summary -->
+            <Frame BorderColor="#E0E0E0" CornerRadius="10" Padding="15" BackgroundColor="#F9F9F9">
+                <VerticalStackLayout>
+                    <Label Text="Order Summary" FontSize="20" FontAttributes="Bold" TextColor="#333333" />
+                    <CollectionView ItemsSource="{Binding CartSummaryItems}" HeightRequest="150">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:CartItem">
+                                <Grid Padding="5" BackgroundColor="White" Margin="0,0,0,5" RowDefinitions="Auto,Auto">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image Source="{Binding Image}" 
+                                           Aspect="AspectFill" 
+                                           WidthRequest="50" 
+                                           HeightRequest="50" />
+
+                                    <VerticalStackLayout Grid.Column="1" Padding="10,0">
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" TextColor="#555555"/>
+                                        <Label Text="{Binding Quantity, StringFormat='Qty: {0}'}" FontSize="14" TextColor="#777777"/>
+                                    </VerticalStackLayout>
+
+                                    <Label Grid.Column="2" 
+                                           Text="{Binding TotalPrice, StringFormat='${0:F2}'}" 
+                                           FontAttributes="Bold" 
+                                           VerticalOptions="Center" 
+                                           TextColor="#000000"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Label Text="{Binding TotalAmount, StringFormat='Total: ${0:F2}'}" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           HorizontalOptions="End" 
+                           TextColor="#000000"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Section: Payment Details -->
+            <Frame BorderColor="#E0E0E0" CornerRadius="10" Padding="15" BackgroundColor="#F9F9F9">
+                <VerticalStackLayout Spacing="15">
+
+                    <Label Text="Payment Details" FontSize="20" FontAttributes="Bold" TextColor="#333333" />
+
+                    <!-- Card Number -->
+                    <Entry x:Name="CardNumberEntry"
+                           Placeholder="Card Number (e.g., 4111111111111111)" 
+                           Text="{Binding CardNumber, Mode=TwoWay}" 
+                           Keyboard="Numeric" 
+                           MaxLength="16" 
+                           BackgroundColor="#FFFFFF"
+                           TextColor="#000000"
+                           FontAttributes="Bold" />
+
+                    <!-- CCV -->
+                    <Entry x:Name="CCVEntry"
+                           Placeholder="CCV" 
+                           Text="{Binding Ccv, Mode=TwoWay}" 
+                           Keyboard="Numeric" 
+                           MaxLength="4" 
+                           BackgroundColor="#FFFFFF"
+                           TextColor="#000000"
+                           FontAttributes="Bold" />
+
+                    <!-- Expiration Date -->
+                    <HorizontalStackLayout Spacing="10">
+                        <Entry Placeholder="MM" 
+                               Text="{Binding ExpirationMonth, Mode=TwoWay}" 
+                               Keyboard="Numeric" 
+                               MaxLength="2" 
+                               BackgroundColor="#FFFFFF"
+                               TextColor="#000000" />
+                        <Entry Placeholder="YYYY" 
+                               Text="{Binding ExpirationYear, Mode=TwoWay}" 
+                               Keyboard="Numeric" 
+                               MaxLength="4" 
+                               BackgroundColor="#FFFFFF"
+                               TextColor="#000000" />
+                    </HorizontalStackLayout>
+
+                    <!-- Billing Address -->
+                    <Entry Placeholder="Billing Address" 
+                           Text="{Binding BillingAddress, Mode=TwoWay}" 
+                           Keyboard="Default" 
+                           BackgroundColor="#FFFFFF"
+                           TextColor="#000000" />
+
+                    <!-- Payment Option Picker -->
+                    <Picker Title="Payment Option" 
+                            ItemsSource="{Binding PaymentOptions}" 
+                            SelectedItem="{Binding PaymentOption, Mode=TwoWay}" 
+                            BackgroundColor="#FFFFFF"
+                            TextColor="#000000" />
+
+                    <!-- Agreement Checkbox -->
+                    <HorizontalStackLayout VerticalOptions="Center" Spacing="10">
+                        <CheckBox IsChecked="{Binding IsAgreementChecked, Mode=TwoWay}" />
+                        <Label Text="I agree to the terms and conditions." 
+                               VerticalTextAlignment="Center" 
+                               TextColor="#555555" />
+                    </HorizontalStackLayout>
+
+                    <!-- Status Message -->
+                    <Label Text="{Binding StatusMessage}" 
+                           TextColor="Red" 
+                           HorizontalOptions="Center" 
+                           IsVisible="{Binding StatusMessage, Converter={StaticResource StringToBoolConverter}}" />
+
+                    <!-- Activity Indicator -->
+                    <ActivityIndicator IsRunning="{Binding IsProcessing}" 
+                                       IsVisible="{Binding IsProcessing}" 
+                                       Color="#4CAF50" />
+
+                    <!-- Confirm Payment Button -->
+                    <Button Text="Confirm Payment" 
+                            Command="{Binding ConfirmPaymentCommand}" 
+                            BackgroundColor="#4CAF50" 
+                            TextColor="White" 
+                            CornerRadius="25"
+                            IsEnabled="{Binding IsNotProcessing}" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

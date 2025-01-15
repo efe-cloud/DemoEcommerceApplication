@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:Ecommerce.client.ViewModels"
+    xmlns:models="clr-namespace:Ecommerce.client.Models"
+    x:Class="Ecommerce.client.Views.Desktop.ProductDetailPage"
+    x:DataType="viewmodel:ProductDetailPageViewModel"
+    Title="Product Details"
+    x:Name="ParentPage">
+    
+
+    <VerticalStackLayout Padding="20" Spacing="10">
+        <Label Text="{Binding Product.Name}"
+               FontSize="20"
+               FontAttributes="Bold" />
+
+        <Image Source="{Binding Product.Image}"
+               WidthRequest="150"
+               HeightRequest="150" />
+
+        <Label Text="{Binding Product.Description}"
+               FontSize="15"
+               LineBreakMode="WordWrap" />
+
+        <Label Text="{Binding Product.Price, StringFormat='Price: {0:C}'}"
+               FontSize="18" />
+
+        <Label Text="{Binding Product.Quantity, StringFormat='Quantity: {0}'}"
+               FontSize="18" />
+
+        <Button Text="Add to Cart"
+                Command="{Binding AddToCartCommand}"
+                CommandParameter="{Binding Product}" />
+        <!-- Pass Product as CommandParameter -->
+    </VerticalStackLayout>
+</ContentPage>
