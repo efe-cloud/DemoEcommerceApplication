@@ -2,6 +2,13 @@
 
 ## Overview
 This is a **full-fledged ECommerce application** built using modern technologies. It features **authentication, product management, shopping cart, order processing, and secure payments**. The backend is built with **.NET 8 Web API**, while the frontend is a **cross-platform .NET MAUI client**.
+---
+## Project Demo
+
+Click the image below to watch the demo video:
+
+[![Project Demo](https://img.youtube.com/vi/_M6Fcwj23rY/0.jpg)](https://www.youtube.com/watch?v=_M6Fcwj23rY)
+
 
 ---
 
